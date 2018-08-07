@@ -1,0 +1,216 @@
+menus:
+  # Size = number of rows
+  # Item slot is zero-indexed!
+
+  confirm:
+    size: 3
+    name: "&4Confirm Action: %s"
+    buttons:
+      confirm:
+        slot: 11
+        material: EMERALD_BLOCK
+        data: 0
+        name: "&a&lConfirm"
+      cancel:
+        slot: 15
+        material: REDSTONE_BLOCK
+        data: 0
+        name: "&c&lCancel"
+
+  management:
+    size: 5
+    name: "&4Management Menu"
+    buttons:
+      rename:
+        slot: 11
+        material: NAME_TAG
+        data: 0
+        name: "&e&lRename Shop"
+      remove:
+        slot: 15
+        material: REDSTONE_BLOCK
+        data: 0
+        name: "&c&lRemove Shop"
+      manage_shop_items:
+        slot: 29
+        material: EMERALD
+        data: 0
+        name: "&a&lManage Shop Items"
+      change_entity_type:
+        slot: 33
+        material: MONSTER_EGG
+        data: 50
+        name: "&a&lChange Entity Type"
+
+  manage_items:
+    size: 3
+    name: "&2&lManage Shop Items"
+    buttons:
+      add_item:
+        slot: 11
+        material: WOOL
+        data: 5
+        name: "&aAdd Item"
+      modify_price:
+        slot: 13
+        material: WOOL
+        data: 4
+        name: "&eModify Item Price"
+      remove_item:
+        slot: 15
+        material: WOOL
+        data: 14
+        name: "&cRemove Item"
+
+  add_item:
+    size: 1
+    name: "&6&lAdd Shop Item"
+    buttons:
+      filler:
+        slot: -1 # Don't change this
+        material: STAINED_GLASS_PANE
+        data: 7
+        name: "&7&lPlace item in empty slot"
+      # The slot where the player should place the item
+      item_slot:
+        slot: 4
+        material: DIRT # Keep this, it's just used as a placeholder and won't show
+        data: 0
+        name: "&1"
+
+  set_price:
+    size: 5
+    name: "&6&lSet Item Price"
+    buttons:
+      selling_item:
+        # The item the player is setting the price of
+        slot: 13
+      current_price:
+        slot: 22
+        material: REDSTONE
+        data: 0
+        name: "&6&lCurrent Price: &e$%s"
+      confirm:
+        slot: 40
+        material: EMERALD_BLOCK
+        data: 0
+        name: "&a&lSave Item"
+      # All the buttons you state below this
+      # will be added as "price modifier" buttons
+      # Their keys should follow the format "add_x" or "remove_x"
+      # They will modify the price depending on their key
+      # Supports decimals!
+      remove_5:
+        slot: 19
+        material: IRON_INGOT
+        data: 0
+        name: "&eRemove 5 from Price"
+      remove_10:
+        slot: 20
+        material: IRON_INGOT
+        data: 0
+        name: "&eRemove 10 from Price"
+      add_5:
+        slot: 24
+        material: GOLD_INGOT
+        data: 0
+        name: "&eAdd 5 to Price"
+      add_10:
+        slot: 25
+        material: GOLD_INGOT
+        data: 0
+        name: "&eAdd 10 to Price"
+
+  remove_item:
+    size: 999 # Don't change! Scales to number of items in shop
+    name: "&6&lRemove Shop Item"
+
+  buy_item:
+    size: 999 # Don't change! Scales to number of items in shop
+    name: "&2&lBuy from %s" # %s replaced with shop name; optional
+
+  entity_type:
+    # The inventory will automatically place the
+    # spawn eggs using the player's permissions
+    size: 1
+    name: "&2&lChange Entity Type"
+    buttons:
+      custom:
+        slot: -1 # Don't change this
+        material: EMPTY_MAP
+        data: 0
+        name: "&6Custom Skin"
+
+shop_creator_item:
+  material: NAME_TAG
+  data: 0
+  name: "&6&lShop Creator Item"
+  lore:
+  - "&cPlace this item anywhere"
+  - "&cin the world"
+  - "&cto create a shop"
+
+# Permissions:
+# playershops.shop_name_colour - Allows people to use colours in their shop name
+# playershops.limit.x - The max number of shops a player can own. Eg: playershops.limit.3
+# playershops.item_limit.x - The max number of items a player can have in a shop
+# playershops.entity_type.x - Allows a player to set their shop entity to a certain type. Eg: playershops.entity_type.creeper
+# playershops.command.give - Allows the player to use the "/shop give" command
+
+# The amount players will need to pay to use an entity type for their shop
+# Will default to 500 if not specified
+entity_prices:
+  player: 0 # The skin of the player who owns the shop
+  creeper: 500
+  zombie: 500
+  skeleton: 500
+  witch: 1000
+  giant: 100000
+  custom: 10000 # Allows the player to enter the name of any player for the NPC skin
+                # Requires "playershops.entity_type.custom" permission
+                # The first time a new skin is loaded it will take a few seconds
+                # for citizens to fetch it from the Mojang API, this is normal
+
+# The format for displaying the price of things
+price_format: "&6Price: &e$%s"
+
+# %s is used for placeholders
+# They should be self explanatory most of the time
+# "[%s]" will become the name of the shop the player is using
+# Leaving a message blank will mean it will never be sent
+messages:
+  shop_location_error: "&e[Player Shops] &cYou cannot create a shop here"
+  shop_amount_error: "&e[Player Shops] &cYou have reached your shop limit"
+  shop_created: "&e[Player Shops] &aYou successfully created a shop!"
+  shop_removed: "&e[%s&e] &cShop removed successfully"
+  shop_name_identical: "&e[%s&e] &cYour shop is already called that"
+  change_existing_shop_name: "&e[Player Shops] &cPlease change the name of one of your existing shops from the default to create a new one"
+  shop_renamed: "&e[%s&e] &aRenamed your shop successfully"
+  shop_name_exists: "&e[%s&e] &cYou already have a shop called that"
+  shop_name_length: "&e[%s&e] &cThat name is too long (max: 16 chars)"
+  shop_entity_type_expensive: "&e[%s&e] &cYou cannot afford that entity type"
+  shop_entity_type_changed: "&e[%s&e] &aChanged shop entity type successfully"
+  shop_invalid_skin_name: "&e[%s&e] &cThat is not a valid player name"
+  shop_item_added: "&e[%s&e] &aAdded item to shop successfully"
+  shop_item_updated: "&e[%s&e] &aUpdated item price successfully"
+  shop_item_limit: "&e[%s&e] &cYou have reached your shop's item limit"
+  shop_price_minimum: "&e[%s&e] &cCannot sell item for free"
+  shop_item_removed: "&e[%s&e] &aRemoved shop item successfully"
+  shop_no_items_to_remove: "&e[%s&e] &cNo items to remove"
+  shop_no_items_to_modify: "&e[%s&e] &cNo items to modify"
+  shop_cannot_buy_from_self: "&e[%s&e] &cYou cannot buy from your own shop"
+  shop_no_items_available: "&e[%s&e] &cThere are no items in stock right now"
+  shop_cannot_afford_buy: "&e[%s&e] &cYou cannot afford this item"
+  shop_item_bought_successfully: "&e[%s&e] &aItem bought successfully!"
+  command_usage_general: "&e[Player Shops] &cUsage: /shops <list/give>"
+  command_usage_give: "&e[Player Shops] &cUsage: /shops give <player> <amount>"
+  command_invalid_player: "&e[Player Shops] &cThat player is not online"
+  command_invalid_number: "&e[Player Shops] &cThat is not a valid number"
+  command_give_given: "&e[Player Shops] &aGave %s Shop Creator Item x %s" # Target player, amount
+  command_give_received: "&e[Player Shops] &aReceived %s of Shop Creator Item from %s" # Amount, from
+  command_no_permission: "&e[Player Shops] &cYou don't have permission to do this"
+  command_only_players: "&e[Player Shops] &cOnly players can use this command"
+  command_shops_non_owned: "&e[Player Shops] &cYou don't own any shops"
+  command_shops_format: "&e[Player Shops] &eYou own &a%s &eshops: " # Amount of shops owned
+  command_shops_separator: "&e, "
+  command_shops_teleported: "&e[Player Shops] &aTeleported to %s" # Shop name

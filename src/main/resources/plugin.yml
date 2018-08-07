@@ -1,0 +1,10 @@
+name: PlayerShops
+version: ${project.version}
+author: Mas281
+
+main: me.itsmas.playershops.PlayerShops
+depend: [Vault, WorldEdit, WorldGuard, Citizens]
+
+commands:
+  playershops:
+    aliases: [shops]
