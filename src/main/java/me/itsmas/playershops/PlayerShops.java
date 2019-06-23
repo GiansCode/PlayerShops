@@ -19,14 +19,10 @@ import java.util.stream.Collectors;
 
 public class PlayerShops extends JavaPlugin
 {
-    // TODO: Shop creation item + Giving
-    // TODO: Adding/removing items, modifying prices
-    // TODO: Buying items
-    // TODO: Commands: /shop <list/give>
-
     private HookManager hookManager; public HookManager getHooks() { return hookManager; }
     private ShopManager shopManager; public ShopManager getShopManager() { return shopManager; }
     private MenuManager menuManager; public MenuManager getMenuManager() { return menuManager; }
+    private ShopPlaceListener placeListener; public ShopPlaceListener getPlaceListener() { return placeListener; }
 
     @Override
     public void onEnable()
@@ -69,7 +65,7 @@ public class PlayerShops extends JavaPlugin
         menuManager = new MenuManager(this);
 
         new NpcClickListener(this);
-        new ShopPlaceListener(this);
+        placeListener = new ShopPlaceListener(this);
 
         shopCreateItem = parseShopItem();
 
@@ -80,7 +76,6 @@ public class PlayerShops extends JavaPlugin
 
         getCommand("playershops").setExecutor(new ShopsCommand(this));
 
-        new TestListener(this);
         return true;
     }
 

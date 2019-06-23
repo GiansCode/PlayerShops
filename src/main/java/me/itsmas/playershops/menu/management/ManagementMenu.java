@@ -7,6 +7,7 @@ import me.itsmas.playershops.menu.MenuData;
 import me.itsmas.playershops.menu.management.items.ManageItemsMenu;
 import me.itsmas.playershops.message.Message;
 import me.itsmas.playershops.shop.Shop;
+import me.itsmas.playershops.util.UtilPermission;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -21,6 +22,7 @@ public class ManagementMenu extends Menu
 
     private final MenuButton rename;
     private final MenuButton remove;
+    private final MenuButton move;
     private final MenuButton manageItems;
     private final MenuButton changeEntityType;
 
@@ -30,6 +32,7 @@ public class ManagementMenu extends Menu
 
         this.rename = menuData.getButton("rename");
         this.remove = menuData.getButton("remove");
+        this.move = menuData.getButton("move");
         this.manageItems = menuData.getButton("manage_shop_items");
         this.changeEntityType = menuData.getButton("change_entity_type");
 
@@ -39,6 +42,7 @@ public class ManagementMenu extends Menu
 
         addButton(rename);
         addButton(remove);
+        addButton(move);
         addButton(manageItems);
         addButton(changeEntityType);
     }
@@ -54,7 +58,7 @@ public class ManagementMenu extends Menu
             {
                 String adaptedName = reply.replace("Shop Name Here", player.getName()).replaceAll("\\s+", " ");
 
-                if (player.hasPermission("playershops.shop_name_colour"))
+                if (UtilPermission.hasPermission(player, "playershops.shop_name_colour"))
                 {
                     adaptedName = ChatColor.translateAlternateColorCodes('&', adaptedName);
                 }
@@ -84,6 +88,13 @@ public class ManagementMenu extends Menu
         else if (wasClicked(stack, remove))
         {
             menu = new ConfirmationMenu(plugin, shop, confirmMenuData, "Remove Shop", Shop::remove);
+        }
+        else if (wasClicked(stack, move))
+        {
+            plugin.getPlaceListener().addMove(player, shop);
+
+            Message.send(player, Message.SHOP_MOVE);
+            player.closeInventory();
         }
         else if (wasClicked(stack, manageItems))
         {

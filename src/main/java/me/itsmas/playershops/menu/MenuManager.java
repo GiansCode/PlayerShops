@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -39,7 +40,9 @@ public class MenuManager implements Listener
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onClick(InventoryClickEvent event)
     {
-        if (event.getClickedInventory() != null && event.getClickedInventory().getType() == InventoryType.PLAYER)
+        Inventory inventory = event.getClickedInventory();
+
+        if (inventory == null)
         {
             return;
         }
@@ -51,7 +54,7 @@ public class MenuManager implements Listener
         {
             InventoryAction action = event.getAction();
 
-            if (action.name().contains("PICKUP"))
+            if (action.name().contains("PICKUP") && inventory.getType() != InventoryType.PLAYER)
             {
                 ItemStack clicked = event.getCurrentItem();
 
@@ -59,26 +62,27 @@ public class MenuManager implements Listener
                 {
                     boolean allow = menu.onClick(player, clicked, event.getClick(), event.getSlot());
                     event.setCancelled(!allow);
+
+                    return;
                 }
             }
-            else if (action == InventoryAction.SWAP_WITH_CURSOR || action == InventoryAction.MOVE_TO_OTHER_INVENTORY)
+            else if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY && inventory.getType() == InventoryType.PLAYER)
             {
-                event.setCancelled(true);
-            }
-            else if (action.name().contains("PLACE"))
-            {
-                ItemStack dragged = event.getCursor();
-
                 if (menu instanceof Placeable)
                 {
-                    boolean allow = ((Placeable) menu).onPlace(player, dragged);
+                    ItemStack stack = event.getCurrentItem();
+
+                    boolean allow = ((Placeable) menu).onPlace(player, stack);
                     event.setCancelled(!allow);
 
                     return;
                 }
 
                 event.setCancelled(true);
+                return;
             }
+
+            event.setCancelled(true);
         }
     }
 
@@ -102,7 +106,7 @@ public class MenuManager implements Listener
 
         Menu menu = menus.remove(player);
 
-        if (menu != null && menu instanceof CloseListener)
+        if (menu instanceof CloseListener)
         {
             ((CloseListener) menu).onClose(player);
         }

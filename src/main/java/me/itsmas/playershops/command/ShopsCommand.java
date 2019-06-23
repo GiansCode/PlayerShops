@@ -3,6 +3,7 @@ package me.itsmas.playershops.command;
 import me.itsmas.playershops.PlayerShops;
 import me.itsmas.playershops.message.Message;
 import me.itsmas.playershops.shop.Shop;
+import me.itsmas.playershops.util.UtilPermission;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -41,7 +42,7 @@ public class ShopsCommand implements CommandExecutor
 
         if (args[0].equalsIgnoreCase("give"))
         {
-            if (!sender.hasPermission("playershops.command.give"))
+            if (!UtilPermission.hasPermission((Player) sender, "playershops.command.give"))
             {
                 Message.send(sender, Message.COMMAND_NO_PERMISSION);
                 return false;
@@ -111,8 +112,6 @@ public class ShopsCommand implements CommandExecutor
                     components.add(builder.create()[0]);
                 }
 
-                BaseComponent last = components.get(components.size() - 1);
-
                 player.spigot().sendMessage(components.toArray(new BaseComponent[0]));
             }
         }
@@ -123,7 +122,6 @@ public class ShopsCommand implements CommandExecutor
                 Player player = (Player) sender;
 
                 UUID id = UUID.fromString(args[1]);
-
                 Shop target = plugin.getShopManager().getOwnedShops(player).stream().filter(shop -> shop.getId().equals(id)).findFirst().orElse(null);
 
                 if (target != null)

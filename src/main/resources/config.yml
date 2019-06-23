@@ -31,6 +31,11 @@ menus:
         material: REDSTONE_BLOCK
         data: 0
         name: "&c&lRemove Shop"
+      move:
+        slot: 22
+        material: COMPASS
+        data: 0
+        name: "&b&lMove Shop"
       manage_shop_items:
         slot: 29
         material: EMERALD
@@ -214,3 +219,5 @@ messages:
   command_shops_format: "&e[Player Shops] &eYou own &a%s &eshops: " # Amount of shops owned
   command_shops_separator: "&e, "
   command_shops_teleported: "&e[Player Shops] &aTeleported to %s" # Shop name
+  shop_move: "&e[Player Shops] &aClick somewhere to move the shop"
+  shop_moved: "&e[Player Shops] &aShop moved successfully"

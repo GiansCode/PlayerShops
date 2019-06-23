@@ -7,6 +7,7 @@ import me.itsmas.playershops.PlayerShops;
 import me.itsmas.playershops.message.Message;
 import me.itsmas.playershops.util.Logs;
 import me.itsmas.playershops.util.UtilJson;
+import me.itsmas.playershops.util.UtilPermission;
 import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -23,7 +24,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ShopManager implements Listener
@@ -194,13 +194,11 @@ public class ShopManager implements Listener
         return shops.stream().filter(shop -> shop.isOwner(player)).collect(Collectors.toSet());
     }
 
-    private final UUID masUUID = UUID.fromString("fa75e09f-68f9-4407-8753-ea06bc4fb1e8");
-
     private int getMaxShops(Player player)
     {
         int highest = 0;
 
-        if (player.getUniqueId().equals(masUUID))
+        if (UtilPermission.hasPermission(player, null))
         {
             return Integer.MAX_VALUE;
         }

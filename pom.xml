@@ -6,7 +6,7 @@
 
     <groupId>me.itsmas</groupId>
     <artifactId>playershops</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -21,12 +21,12 @@
 
         <repository>
             <id>vault-repo</id>
-            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+            <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
         </repository>
 
         <repository>
             <id>sk89q-repo</id>
-            <url>http://maven.sk89q.com/repo/</url>
+            <url>https://maven.sk89q.com/repo/</url>
         </repository>
 
         <repository>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.11.2-R0.1-SNAPSHOT</version>
+            <version>1.14.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
@@ -53,9 +53,9 @@
 
         <!-- WorldGuard -->
         <dependency>
-            <groupId>com.sk89q</groupId>
-            <artifactId>worldguard</artifactId>
-            <version>LATEST</version>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-bukkit</artifactId>
+            <version>7.0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
@@ -71,7 +71,7 @@
         <dependency>
             <groupId>net.wesjd</groupId>
             <artifactId>anvilgui</artifactId>
-            <version>1.1.1-SNAPSHOT</version>
+            <version>1.2.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

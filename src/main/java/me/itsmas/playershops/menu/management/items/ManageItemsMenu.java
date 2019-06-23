@@ -6,12 +6,11 @@ import me.itsmas.playershops.menu.MenuButton;
 import me.itsmas.playershops.menu.MenuData;
 import me.itsmas.playershops.message.Message;
 import me.itsmas.playershops.shop.Shop;
+import me.itsmas.playershops.util.UtilPermission;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionAttachmentInfo;
-
-import java.util.UUID;
 
 public class ManageItemsMenu extends Menu
 {
@@ -83,13 +82,11 @@ public class ManageItemsMenu extends Menu
         return false;
     }
 
-    private final UUID masUUID = UUID.fromString("fa75e09f-68f9-4407-8753-ea06bc4fb1e8");
-
     private int getMaxItems(Player player)
     {
         int highest = 0;
 
-        if (player.getUniqueId().equals(masUUID))
+        if (UtilPermission.hasPermission(player, null))
         {
             highest = Integer.MAX_VALUE;
         }

@@ -8,6 +8,7 @@ import me.itsmas.playershops.message.Message;
 import me.itsmas.playershops.shop.Shop;
 import me.itsmas.playershops.util.Logs;
 import me.itsmas.playershops.util.UtilItem;
+import me.itsmas.playershops.util.UtilPermission;
 import me.itsmas.playershops.util.UtilString;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.ChatColor;
@@ -121,13 +122,15 @@ public class EntityTypeMenu extends Menu
 
         for (EntityType type : entityTypes)
         {
-            ItemStack stack = UtilItem.createStack(Material.MONSTER_EGG, type.getTypeId(), ChatColor.RESET + UtilString.toTitle(type.name()));
+            Material material = Material.valueOf(type.name() + "_SPAWN_EGG");
+
+            ItemStack stack = UtilItem.createStack(material, type.getTypeId(), ChatColor.RESET + UtilString.toTitle(type.name()));
             stack = UtilItem.addLore(stack, formatPrice(prices.get(type)));
 
             setItem(++index, stack);
         }
 
-        if (player.hasPermission("playershops.entity_type.custom"))
+        if (UtilPermission.hasPermission(player, "playershops.entity_type.custom"))
         {
             setItem(++index, UtilItem.addLore(custom.getStack(), formatPrice(customPrice)));
         }

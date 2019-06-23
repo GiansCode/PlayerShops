@@ -7,9 +7,11 @@ import me.itsmas.playershops.util.Logs;
 import me.itsmas.playershops.util.UtilItem;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
@@ -206,5 +208,11 @@ public class Shop
         object.add("items", UtilItem.serializeItems(items));
 
         return object;
+    }
+
+    public void move(Player player, Location location)
+    {
+        npc.teleport(location, TeleportCause.PLUGIN);
+        Message.send(player, Message.SHOP_MOVED);
     }
 }

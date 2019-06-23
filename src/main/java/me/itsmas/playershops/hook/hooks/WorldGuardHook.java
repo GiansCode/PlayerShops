@@ -1,5 +1,8 @@
 package me.itsmas.playershops.hook.hooks;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import me.itsmas.playershops.PlayerShops;
 import me.itsmas.playershops.hook.Hook;
@@ -13,7 +16,7 @@ public class WorldGuardHook extends Hook
         super(plugin, "WorldEdit", "WorldGuard");
     }
 
-    private WorldGuardPlugin worldGuard;
+    private WorldGuard worldGuard;
 
     @Override
     public boolean init()
@@ -23,12 +26,18 @@ public class WorldGuardHook extends Hook
             return false;
         }
 
-        worldGuard = WorldGuardPlugin.inst();
+        worldGuard = WorldGuard.getInstance();
         return worldGuard != null;
     }
 
     public boolean canBuild(Player player, Location location)
     {
-        return worldGuard.canBuild(player, location);
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+
+        return worldGuard
+            .getPlatform()
+            .getRegionContainer()
+            .createQuery()
+            .testBuild(BukkitAdapter.adapt(location), localPlayer);
     }
 }
