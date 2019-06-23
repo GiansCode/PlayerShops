@@ -221,3 +221,4 @@ messages:
   command_shops_teleported: "&e[Player Shops] &aTeleported to %s" # Shop name
   shop_move: "&e[Player Shops] &aClick somewhere to move the shop"
   shop_moved: "&e[Player Shops] &aShop moved successfully"
+  shop_move_error: "&e[Player Shops] &aYou cannot move your shop here"

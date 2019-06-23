@@ -38,7 +38,7 @@ public class PlayerShops extends JavaPlugin
 
     public ItemStack getShopCreateItem()
     {
-        return shopCreateItem;
+        return shopCreateItem.clone();
     }
 
     @Override
