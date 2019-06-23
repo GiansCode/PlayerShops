@@ -163,6 +163,15 @@ public class Shop
             npc.destroy();
             plugin.getShopManager().removeShop(this);
 
+            if (player.getInventory().firstEmpty() == -1)
+            {
+                player.getLocation().getWorld().dropItem(player.getLocation(), plugin.getShopCreateItem());
+            }
+            else
+            {
+                player.getInventory().addItem(plugin.getShopCreateItem());
+            }
+
             Message.send(player, Message.SHOP_REMOVED, getName());
         }
     }

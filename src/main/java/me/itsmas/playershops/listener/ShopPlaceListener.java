@@ -1,6 +1,7 @@
 package me.itsmas.playershops.listener;
 
 import me.itsmas.playershops.PlayerShops;
+import me.itsmas.playershops.message.Message;
 import me.itsmas.playershops.shop.Shop;
 import me.itsmas.playershops.util.UtilItem;
 import me.itsmas.playershops.util.UtilServer;
@@ -46,9 +47,17 @@ public class ShopPlaceListener implements Listener
             if (movePlayers.containsKey(player.getUniqueId()))
             {
                 Shop shop = movePlayers.get(player.getUniqueId());
-                shop.move(player, determineLocation(event));
+                Location location = determineLocation(event);
 
+                if (!plugin.getHooks().getWorldGuardHook().canBuild(player, location))
+                {
+                    Message.send(player, Message.SHOP_MOVE_ERROR);
+                    return;
+                }
+
+                shop.move(player, location);
                 movePlayers.remove(player.getUniqueId());
+
                 return;
             }
 

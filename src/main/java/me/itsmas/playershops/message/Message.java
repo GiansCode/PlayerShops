@@ -43,7 +43,8 @@ public enum Message
     COMMAND_SHOPS_TELEPORTED,
     COMMAND_SHOPS_SEPARATOR,
     SHOP_MOVE,
-    SHOP_MOVED;
+    SHOP_MOVED,
+    SHOP_MOVE_ERROR;
 
     private String msg;
 

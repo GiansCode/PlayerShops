@@ -74,7 +74,7 @@ public class ShopsCommand implements CommandExecutor
                 return false;
             }
 
-            ItemStack stack = plugin.getShopCreateItem().clone();
+            ItemStack stack = plugin.getShopCreateItem();
             stack.setAmount(amount);
 
             player.getInventory().addItem(stack);

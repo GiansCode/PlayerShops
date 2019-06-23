@@ -6,7 +6,7 @@
 
     <groupId>me.itsmas</groupId>
     <artifactId>playershops</artifactId>
-    <version>1.1-mc1.8</version>
+    <version>1.2-mc1.8</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
