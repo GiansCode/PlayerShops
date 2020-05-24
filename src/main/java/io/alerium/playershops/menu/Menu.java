@@ -10,39 +10,34 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public abstract class Menu
-{
+public abstract class Menu {
+    
     protected final PlayerShops plugin;
 
     protected final Shop shop;
     protected final Inventory inventory;
 
-    public Menu(PlayerShops plugin, Shop shop, MenuData menuData)
-    {
+    public Menu(PlayerShops plugin, Shop shop, MenuData menuData) {
         this(plugin, shop, menuData.getSize(), menuData.getName());
     }
 
-    public Menu(PlayerShops plugin, Shop shop, int size, String name)
-    {
+    public Menu(PlayerShops plugin, Shop shop, int size, String name) {
         this.plugin = plugin;
 
         this.shop = shop;
         this.inventory = Bukkit.createInventory(null, size * 9, UtilString.colour(name));
     }
 
-    protected void setItem(int index, ItemStack stack)
-    {
+    protected void setItem(int index, ItemStack stack) {
         inventory.setItem(index, stack);
     }
 
-    public void open(Player player)
-    {
+    public void open(Player player) {
         player.openInventory(inventory);
         plugin.getMenuManager().updateMenu(player, this);
     }
 
-    protected void addButton(MenuButton button)
-    {
+    protected void addButton(MenuButton button) {
         setItem(button.getSlot(), button.getStack());
     }
 
@@ -51,10 +46,9 @@ public abstract class Menu
      */
     public abstract boolean onClick(Player player, ItemStack stack, ClickType click, int slot);
 
-    protected boolean wasClicked(ItemStack stack, MenuButton button)
-    {
+    protected boolean wasClicked(ItemStack stack, MenuButton button) {
         return
                 stack.getType() == button.getStack().getType() &&
-                UtilItem.getItemName(stack).equals(UtilItem.getItemName(button.getStack()));
+                        UtilItem.getItemName(stack).equals(UtilItem.getItemName(button.getStack()));
     }
 }

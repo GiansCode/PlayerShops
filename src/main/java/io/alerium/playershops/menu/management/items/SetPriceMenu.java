@@ -8,6 +8,7 @@ import io.alerium.playershops.menu.MenuData;
 import io.alerium.playershops.message.Message;
 import io.alerium.playershops.shop.Shop;
 import io.alerium.playershops.util.UtilItem;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -15,8 +16,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Set;
 
-public class SetPriceMenu extends Menu implements CloseListener
-{
+public class SetPriceMenu extends Menu implements CloseListener {
+    
     private final MenuButton sellingItem;
     private final MenuButton currentPrice;
     private final MenuButton confirm;
@@ -27,8 +28,10 @@ public class SetPriceMenu extends Menu implements CloseListener
 
     private final boolean newItem;
 
-    SetPriceMenu(PlayerShops plugin, Shop shop, MenuData menuData, ItemStack stack, boolean newItem)
-    {
+    @Setter private double price;
+    private boolean added = false;
+
+    SetPriceMenu(PlayerShops plugin, Shop shop, MenuData menuData, ItemStack stack, boolean newItem) {
         super(plugin, shop, menuData);
 
         this.sellingItem = menuData.getButton("selling_item");
@@ -51,65 +54,44 @@ public class SetPriceMenu extends Menu implements CloseListener
 
         setItem(sellingItem.getSlot(), stack);
     }
-
-    private double price;
-    private boolean added = false;
-
+    
     @Override
-    public void open(Player player)
-    {
+    public void open(Player player) {
         super.open(player);
     }
 
     @Override
-    public boolean onClick(Player player, ItemStack stack, ClickType click, int slot)
-    {
+    public boolean onClick(Player player, ItemStack stack, ClickType click, int slot) {
         MenuButton modifier = getClickedButton(stack);
 
-        if (modifier != null)
-        {
+        if (modifier != null) {
             double adjustment = modifier.getModifierValue();
-
             adjustPrice(adjustment);
-
             return false;
         }
 
-        if (wasClicked(stack, confirm))
-        {
-            if (price > 0.0D)
-            {
-                added = true;
-
-                shop.addItem(this.stack, price);
-                player.closeInventory();
-            }
-            else
-            {
+        if (wasClicked(stack, confirm)) {
+            if (price <= 0.0D) {
                 Message.send(player, Message.SHOP_PRICE_MINIMUM, shop.getName());
+                return false;
             }
+            
+            added = true;
+
+            shop.addItem(this.stack, price);
+            player.closeInventory();
         }
         return false;
     }
 
     @Override
-    public void onClose(Player player)
-    {
+    public void onClose(Player player) {
         if (!added && newItem)
-        {
             player.getInventory().addItem(stack);
-        }
     }
 
-    private void setPrice(double price)
-    {
-        this.price = price;
-    }
-
-    private void adjustPrice(double price)
-    {
-        if (this.price + price < 0.0D)
-        {
+    private void adjustPrice(double price) {
+        if (this.price + price < 0.0D) {
             return;
         }
 
@@ -118,8 +100,7 @@ public class SetPriceMenu extends Menu implements CloseListener
         updateLore();
     }
 
-    private void updateLore()
-    {
+    private void updateLore() {
         ItemStack currentPriceStack = currentPrice.getStack();
         ItemStack newStack = UtilItem.createStack(currentPriceStack.getType(), currentPriceStack.getDurability(),
                 String.format(currentPriceStack.getItemMeta().getDisplayName().replace(String.valueOf(0.0D), "%s"), price));
@@ -127,23 +108,19 @@ public class SetPriceMenu extends Menu implements CloseListener
         setItem(currentPrice.getSlot(), newStack);
     }
 
-    private MenuButton getClickedButton(ItemStack stack)
-    {
-        for (MenuButton button : priceModifiers)
-        {
-            if (wasClicked(stack, button))
-            {
+    private MenuButton getClickedButton(ItemStack stack) {
+        for (MenuButton button : priceModifiers) {
+            if (wasClicked(stack, button)) 
                 return button;
-            }
         }
 
         return null;
     }
 
-    private void setInitialLore()
-    {
+    private void setInitialLore() {
         ItemMeta meta = currentPrice.getStack().getItemMeta();
         meta.setDisplayName(String.format(meta.getDisplayName(), price));
         currentPrice.getStack().setItemMeta(meta);
     }
+    
 }

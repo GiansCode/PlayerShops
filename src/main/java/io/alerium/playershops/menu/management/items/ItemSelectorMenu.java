@@ -11,17 +11,17 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class ItemSelectorMenu extends Menu
-{
-    public ItemSelectorMenu(PlayerShops plugin, Shop shop, MenuData menuData, Object... params)
-    {
+public abstract class ItemSelectorMenu extends Menu {
+    
+    protected ItemStack[] originalItems;
+    
+    public ItemSelectorMenu(PlayerShops plugin, Shop shop, MenuData menuData, Object... params) {
         super(plugin, shop, shop.getGuiSize(), menuData.getName().contains("%s") ? String.format(menuData.getName(), params) : menuData.getName());
 
         addItems();
     }
 
-    private void addItems()
-    {
+    private void addItems() {
         originalItems = shop.getStacks().toArray(new ItemStack[0]);
 
         Map<ItemStack, Double> items = shop.getItems();
@@ -31,6 +31,5 @@ public abstract class ItemSelectorMenu extends Menu
 
         items.forEach((stack, price) -> setItem(index.incrementAndGet(), UtilItem.addLore(stack.clone(), String.format(format, price))));
     }
-
-    protected ItemStack[] originalItems;
+    
 }

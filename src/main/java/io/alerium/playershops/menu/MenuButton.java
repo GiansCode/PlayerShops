@@ -1,49 +1,30 @@
 package io.alerium.playershops.menu;
 
+import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 
-public class MenuButton
-{
-    private final ItemStack stack;
-    private final int slot;
+public class MenuButton {
+    
+    @Getter private final ItemStack stack;
+    @Getter private final int slot;
 
-    MenuButton(ItemStack stack, int slot, String key)
-    {
+    @Getter private double modifierValue;
+
+    MenuButton(ItemStack stack, int slot, String key) {
         this.stack = stack;
         this.slot = slot;
 
-        if (key.startsWith("add_"))
-        {
-            try
-            {
+        if (key.startsWith("add_")) {
+            try {
                 modifierValue = Double.parseDouble(key.split("_")[1]);
+            } catch (NumberFormatException ignored) {
             }
-            catch (NumberFormatException ignored){}
-        }
-        else if (key.startsWith("remove_"))
-        {
-            try
-            {
+        } else if (key.startsWith("remove_")) {
+            try {
                 modifierValue = -Double.parseDouble(key.split("_")[1]);
+            } catch (NumberFormatException ignored) {
             }
-            catch (NumberFormatException ignored){}
         }
     }
-
-    public ItemStack getStack()
-    {
-        return stack;
-    }
-
-    public int getSlot()
-    {
-        return slot;
-    }
-
-    private double modifierValue;
-
-    public double getModifierValue()
-    {
-        return modifierValue;
-    }
+    
 }

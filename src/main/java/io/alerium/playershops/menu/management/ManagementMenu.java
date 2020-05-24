@@ -14,8 +14,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-public class ManagementMenu extends Menu
-{
+public class ManagementMenu extends Menu {
+    
     private final MenuData confirmMenuData;
     private final MenuData entityTypeMenuData;
     private final MenuData manageItemsMenuData;
@@ -26,8 +26,7 @@ public class ManagementMenu extends Menu
     private final MenuButton manageItems;
     private final MenuButton changeEntityType;
 
-    public ManagementMenu(PlayerShops plugin, Shop shop, MenuData menuData, MenuData confirmMenuData, MenuData entityTypeMenuData, MenuData manageItemsMenuData)
-    {
+    public ManagementMenu(PlayerShops plugin, Shop shop, MenuData menuData, MenuData confirmMenuData, MenuData entityTypeMenuData, MenuData manageItemsMenuData) {
         super(plugin, shop, menuData);
 
         this.rename = menuData.getButton("rename");
@@ -48,35 +47,26 @@ public class ManagementMenu extends Menu
     }
 
     @Override
-    public boolean onClick(Player player, ItemStack stack, ClickType click, int slot)
-    {
+    public boolean onClick(Player player, ItemStack stack, ClickType click, int slot) {
         Menu menu = null;
 
-        if (wasClicked(stack, rename))
-        {
-            new AnvilGUI(plugin, player, shop.getName(), (p, reply) ->
-            {
+        if (wasClicked(stack, rename)) {
+            new AnvilGUI(plugin, player, shop.getName(), (p, reply) -> {
                 String adaptedName = reply.replace("Shop Name Here", player.getName()).replaceAll("\\s+", " ");
-
-                if (UtilPermission.hasPermission(player, "playershops.shop_name_colour"))
-                {
+                if (UtilPermission.hasPermission(player, "playershops.shop_name_colour")) 
                     adaptedName = ChatColor.translateAlternateColorCodes('&', adaptedName);
-                }
 
-                if (adaptedName.length() > 16)
-                {
+                if (adaptedName.length() > 16) {
                     Message.send(player, Message.SHOP_NAME_LENGTH, shop.getName());
                     return null;
                 }
 
-                if (shop.getName().equals(adaptedName))
-                {
+                if (shop.getName().equals(adaptedName)) {
                     Message.send(player, Message.SHOP_NAME_IDENTICAL, shop.getName());
                     return null;
                 }
 
-                if (!plugin.getShopManager().canNameShop(player, adaptedName))
-                {
+                if (!plugin.getShopManager().canNameShop(player, adaptedName)) {
                     Message.send(player, Message.SHOP_NAME_EXISTS, shop.getName());
                     return null;
                 }
@@ -84,31 +74,26 @@ public class ManagementMenu extends Menu
                 shop.rename(adaptedName);
                 return null;
             });
+            return false;
         }
-        else if (wasClicked(stack, remove))
-        {
-            menu = new ConfirmationMenu(plugin, shop, confirmMenuData, "Remove Shop", Shop::remove);
-        }
-        else if (wasClicked(stack, move))
-        {
+       
+       if (wasClicked(stack, move)) {
             plugin.getPlaceListener().addMove(player, shop);
 
             Message.send(player, Message.SHOP_MOVE);
             player.closeInventory();
-        }
-        else if (wasClicked(stack, manageItems))
-        {
-            menu = new ManageItemsMenu(plugin, shop, manageItemsMenuData);
-        }
-        else if (wasClicked(stack, changeEntityType))
-        {
-            menu = new EntityTypeMenu(plugin, shop, entityTypeMenuData);
-        }
+            return false;
+       }
 
-        if (menu != null)
-        {
+        if (wasClicked(stack, remove))
+            menu = new ConfirmationMenu(plugin, shop, confirmMenuData, "Remove Shop", Shop::remove);
+        else if (wasClicked(stack, manageItems))
+            menu = new ManageItemsMenu(plugin, shop, manageItemsMenuData);
+        else if (wasClicked(stack, changeEntityType))
+            menu = new EntityTypeMenu(plugin, shop, entityTypeMenuData);
+
+        if (menu != null) 
             menu.open(player);
-        }
 
         return false;
     }

@@ -11,15 +11,14 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
 
-public class ConfirmationMenu extends Menu
-{
+public class ConfirmationMenu extends Menu {
+    
     private final MenuButton confirm;
     private final MenuButton cancel;
 
     private final Consumer<Shop> confirmAction;
 
-    public ConfirmationMenu(PlayerShops plugin, Shop shop, MenuData menuData, String action, Consumer<Shop> confirmAction)
-    {
+    public ConfirmationMenu(PlayerShops plugin, Shop shop, MenuData menuData, String action, Consumer<Shop> confirmAction) {
         super(plugin, shop, menuData.formatName(action));
 
         this.confirm = menuData.getButton("confirm");
@@ -32,15 +31,11 @@ public class ConfirmationMenu extends Menu
     }
 
     @Override
-    public boolean onClick(Player player, ItemStack stack, ClickType click, int slot)
-    {
+    public boolean onClick(Player player, ItemStack stack, ClickType click, int slot) {
         if (wasClicked(stack, confirm))
-        {
             confirmAction.accept(shop);
-        }
 
         player.closeInventory();
-
         return false;
     }
 }
